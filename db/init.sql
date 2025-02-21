@@ -21,7 +21,7 @@ BEGIN
             id CHAR(36) PRIMARY KEY NOT NULL,
             name VARCHAR(100) NOT NULL,
             nik VARCHAR(16) NOT NULL,
-            no_hp VARCHAR(13) NOT NULL,
+            phone_number VARCHAR(13) NOT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP
         )';

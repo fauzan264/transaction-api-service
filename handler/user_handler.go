@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/fauzan264/transaction-api-service/helper"
@@ -46,5 +47,22 @@ func (h *userHandler) RegisterUser(c echo.Context) error {
 	}
 
 	response := helper.APIResponse(true, "Account has been registered", user.FormatUserCreate(createUser))
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *userHandler) GetBalance(c echo.Context) error {
+	getNumberBalance := c.Param("number_balance")
+	log.Println(getNumberBalance)
+	
+	userBalance, err := h.userService.GetBalance(getNumberBalance)
+	if err != nil {
+		errorMessage := map[string]interface{}{"errors": err.Error()}
+		c.Set("error", errorMessage)
+		response := helper.APIResponse(false, "Failed to check user balance", errorMessage)
+		return c.JSON(http.StatusUnprocessableEntity, response)
+	}
+
+	formatter := user.FormatUserBalance(userBalance)
+	response := helper.APIResponse(true, "Success to check user balance", formatter)
 	return c.JSON(http.StatusOK, response)
 }

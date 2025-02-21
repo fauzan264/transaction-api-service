@@ -35,21 +35,14 @@ func main() {
 	userHandler := handler.NewAuthHandler(userService)
 
 	api := e.Group("/api/v1")
-	// api.POST("/user/register", authHandler.RegisterUser)
 	api.POST("/daftar", userHandler.RegisterUser)
-	
-	// /api/daftar // nama, nik, no_hp. 
-		// 200 field no_rekening generate yang berisi data nomor rekening nasabah
-		// 400 deskripsi kesalahan terkait data yg dikirim
+	api.GET("/saldo/:number_balance", userHandler.GetBalance)
 	// /api/tabung // no_rekening, nominal
 		// 200 saldo yang berisi data saldo nasabah saat ini
 		// 400 remark yang berisi deskripsi kesalahan terkait data yg dikirim
 	// /api/tarik // no_rekening, nominal
 		// 200 field saldo yang berisi data saldo nasabah saat ini.
 		// 400 field remark yang berisi deskripsi kesalahan terkait data yg dikirim
-	// /api/saldo/{{no_rekening}}
-		// field saldo yang berisi data saldo nasabah saat ini
-		// field remark yang berisi deskripsi kesalahan terkait data yg dikirim
 
 	addr := fmt.Sprintf("%s:%s", cfg.AppHost, cfg.AppPort)
 	e.Logger.Fatal(e.Start(addr))

@@ -10,6 +10,7 @@ import (
 
 type Service interface {
 	RegisterUser(input RegisterUserinput) (User, error)
+	GetBalance(number_balance string) (UserBalance, error)
 }
 
 type service struct {
@@ -59,4 +60,13 @@ func (s *service) RegisterUser(input RegisterUserinput) (User, error) {
 	}
 
 	return newUser, nil
+}
+
+func (s *service) GetBalance(numberBalance string) (UserBalance, error) {
+	userBalance, err := s.repository.GetBalance(numberBalance)
+	if err != nil {
+		return userBalance, err
+	}
+
+	return userBalance, nil
 }

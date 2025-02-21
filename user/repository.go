@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -51,6 +52,7 @@ func (r *repository) CheckNoHP(phone_number string) bool {
 
 func (r *repository) GetBalance(numberBalance string) (UserBalance, error) {
 	var userBalance UserBalance
+	log.Println(numberBalance)
 	result := r.db.Where("number = ?", numberBalance).Find(&userBalance)
 
 	if result.RowsAffected == 0 {

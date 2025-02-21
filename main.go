@@ -36,7 +36,7 @@ func main() {
 
 	api := e.Group("/api/v1")
 	// api.POST("/user/register", authHandler.RegisterUser)
-	api.POST("/user/daftar", userHandler.RegisterUser)
+	api.POST("/daftar", userHandler.RegisterUser)
 	
 	// /api/daftar // nama, nik, no_hp. 
 		// 200 field no_rekening generate yang berisi data nomor rekening nasabah

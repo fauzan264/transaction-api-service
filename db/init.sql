@@ -43,6 +43,7 @@ BEGIN
         EXECUTE 'CREATE TABLE transactions.transactions (
             id CHAR(36) PRIMARY KEY NOT NULL,
             user_balance_id CHAR(36) NOT NULL,
+            amount INT CHECK (amount >= 0),
             status VARCHAR(20) NOT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )';

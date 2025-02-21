@@ -7,6 +7,7 @@ import (
 	"github.com/fauzan264/transaction-api-service/config"
 	"github.com/fauzan264/transaction-api-service/handler"
 	"github.com/fauzan264/transaction-api-service/middleware"
+	"github.com/fauzan264/transaction-api-service/transaction"
 	"github.com/fauzan264/transaction-api-service/user"
 	"github.com/labstack/echo/v4"
 )
@@ -27,22 +28,21 @@ func main() {
 
 	// Repositories
 	userRepository := user.NewRepository(db)
+	transactionRepository := transaction.NewRepository(db)
 
 	// Services
 	userService := user.NewService(userRepository)
+	transactionService := transaction.NewService(transactionRepository, userRepository)
 
 	// Handler
 	userHandler := handler.NewAuthHandler(userService)
+	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	api := e.Group("/api/v1")
 	api.POST("/daftar", userHandler.RegisterUser)
 	api.GET("/saldo/:number_balance", userHandler.GetBalance)
-	// /api/tabung // no_rekening, nominal
-		// 200 saldo yang berisi data saldo nasabah saat ini
-		// 400 remark yang berisi deskripsi kesalahan terkait data yg dikirim
-	// /api/tarik // no_rekening, nominal
-		// 200 field saldo yang berisi data saldo nasabah saat ini.
-		// 400 field remark yang berisi deskripsi kesalahan terkait data yg dikirim
+	api.POST("/tarik", transactionHandler.WithdrawTransaction)
+	api.POST("/tabung", transactionHandler.SavingTransaction)
 
 	addr := fmt.Sprintf("%s:%s", cfg.AppHost, cfg.AppPort)
 	e.Logger.Fatal(e.Start(addr))

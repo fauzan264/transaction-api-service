@@ -1,23 +1,36 @@
-version: '3.8'
-
 services:
-  postgres:
-    image: postgres:13
-    container_name: transaction_db
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "${DB_PORT}:5432"
-    volumes:
-      - transaction_data:/var/lib/transaction_data/data
-    networks:
-      - transaction_network
+    backend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: transaction_backend_service
+        env_file:
+            - .env
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
+        depends_on:
+            - db
+        networks:
+            - transaction_network
+
+    db:
+        image: postgres:13
+        container_name: transaction_db
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+        ports:
+            - "${DB_PORT}:5432"
+        volumes:
+            - transaction_data:/var/lib/transaction_data/data
+            - ${PWD}/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - transaction_network
 volumes:
-  transaction_data:
-    driver: local
+    transaction_data:
+        driver: local
 
 networks:
-  transaction_network:
-    driver: bridge
+    transaction_network:
+        driver: bridge

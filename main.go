@@ -6,15 +6,16 @@ import (
 
 	"github.com/fauzan264/transaction-api-service/config"
 	"github.com/fauzan264/transaction-api-service/handler"
-	"github.com/fauzan264/transaction-api-service/middleware"
+	myMiddleware "github.com/fauzan264/transaction-api-service/middleware"
 	"github.com/fauzan264/transaction-api-service/transaction"
 	"github.com/fauzan264/transaction-api-service/user"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
 	cfg := config.LoadConfig()
-	logger, logFile, err := middleware.SetupLogger()
+	logger, logFile, err := myMiddleware.SetupLogger()
 	if err != nil {
 		log.Fatalf("error setting up logger: %v", err)
 	}
@@ -24,7 +25,8 @@ func main() {
 	log.Println(&db)
 
 	e := echo.New()
-	e.Use(middleware.LoggerMiddleware(logger))
+	e.Use(middleware.CORS())
+	e.Use(myMiddleware.LoggerMiddleware(logger))
 
 	// Repositories
 	userRepository := user.NewRepository(db)

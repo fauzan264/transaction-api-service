@@ -46,6 +46,6 @@ func main() {
 	api.POST("/tarik", transactionHandler.WithdrawTransaction)
 	api.POST("/tabung", transactionHandler.SavingTransaction)
 
-	addr := fmt.Sprintf("%s:%s", cfg.AppHost, cfg.AppPort)
+	addr := fmt.Sprintf(":%s", cfg.AppPort)
 	e.Logger.Fatal(e.Start(addr))
 }

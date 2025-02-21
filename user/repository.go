@@ -12,6 +12,7 @@ type Repository interface {
 	CheckNIK(nik string) bool
 	CheckNoHP(phone_number string) bool
 	GetBalance(numberBalance string) (UserBalance, error)
+	UpdateBalance(userBalance UserBalance) (UserBalance, error)
 }
 
 type repository struct {
@@ -61,6 +62,15 @@ func (r *repository) GetBalance(numberBalance string) (UserBalance, error) {
 
 	if result.Error != nil {
 		return userBalance, result.Error
+	}
+
+	return userBalance, nil
+}
+
+func (r *repository) UpdateBalance(userBalance UserBalance) (UserBalance, error) {
+	err := r.db.Save(&userBalance).Error
+	if err != nil {
+		return userBalance, err
 	}
 
 	return userBalance, nil

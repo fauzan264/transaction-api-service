@@ -7,12 +7,12 @@ import (
 )
 
 type User struct {
-	ID			uuid.UUID	`gorm:"type:char(36);primary_key"`
-	Name		string		`gorm:"type:varchar(100)"`
-	NIK			string		`gorm:"type:varchar(16)"`
-	NoHp		string		`gorm:"type:varchar(13)"`
-	CreatedAt	time.Time	`gorm:"type:timestamp"`
-	UpdatedAt	time.Time	`gorm:"type:timestamp"`
+	ID				uuid.UUID	`gorm:"type:char(36);primary_key"`
+	Name			string		`gorm:"type:varchar(100)"`
+	NIK				string		`gorm:"type:varchar(16)"`
+	PhoneNumber		string		`gorm:"type:varchar(13)"`
+	CreatedAt		time.Time	`gorm:"type:timestamp"`
+	UpdatedAt		time.Time	`gorm:"type:timestamp"`
 	
 	UserBalance	UserBalance `gorm:"foreignKey:UserID"`
 }

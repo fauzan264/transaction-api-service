@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	"log"
 
 	"gorm.io/gorm"
 )
@@ -10,7 +9,7 @@ import (
 type Repository interface {
 	CreateUser(user User) (User, error)
 	CheckNIK(nik string) bool
-	CheckNoHP(phone_number string) bool
+	CheckPhoneNumber(phone_number string) bool
 	GetBalance(numberBalance string) (UserBalance, error)
 	UpdateBalance(userBalance UserBalance) (UserBalance, error)
 }
@@ -34,7 +33,7 @@ func (r *repository) CreateUser(user User) (User, error) {
 }
 
 func (r *repository) CheckNIK(nik string) bool {
-	err := r.db.Model(&User{}).Where("nik = ?", nik).Error
+	err := r.db.Where("nik = ?", nik).First(&User{}).Error
 	if err != nil {
 		return false
 	}
@@ -42,8 +41,8 @@ func (r *repository) CheckNIK(nik string) bool {
 	return true
 }
 
-func (r *repository) CheckNoHP(phone_number string) bool {
-	err := r.db.Model(&User{}).Where("phone_number = ?", phone_number).Error
+func (r *repository) CheckPhoneNumber(phone_number string) bool {
+	err := r.db.Where("phone_number = ?", phone_number).First(&User{}).Error
 	if err != nil {
 		return false
 	}
@@ -53,7 +52,6 @@ func (r *repository) CheckNoHP(phone_number string) bool {
 
 func (r *repository) GetBalance(numberBalance string) (UserBalance, error) {
 	var userBalance UserBalance
-	log.Println(numberBalance)
 	result := r.db.Where("number = ?", numberBalance).Find(&userBalance)
 
 	if result.RowsAffected == 0 {

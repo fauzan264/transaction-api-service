@@ -22,7 +22,7 @@ func NewService(repository Repository) *service {
 }
 
 func (s *service) RegisterUser(input RegisterUserinput) (User, error) {
-	if input.Name == "" || input.NIK == "" || input.NoHP == "" {
+	if input.Name == "" || input.NIK == "" || input.PhoneNumber == "" {
 		return User{}, errors.New("name, nik, and no_hp cannot be empty")
 	}
 
@@ -30,7 +30,7 @@ func (s *service) RegisterUser(input RegisterUserinput) (User, error) {
 		return User{}, errors.New("The provided NIK is already in use. Please use a different NIK.")
 	}
 
-	if s.repository.CheckNoHP(input.NoHP) {
+	if s.repository.CheckPhoneNumber(input.PhoneNumber) {
 		return User{}, errors.New("The provided Phone Number is already in use. Please use a different Phone Number.")
 	}
 	
@@ -39,7 +39,7 @@ func (s *service) RegisterUser(input RegisterUserinput) (User, error) {
 		ID: user_id,
 		Name: input.Name,
 		NIK: input.NIK,
-		NoHp: input.NoHP,
+		PhoneNumber: input.PhoneNumber,
 		CreatedAt: time.Now(),
 	}
 

@@ -35,7 +35,7 @@ func main() {
 	transactionService := transaction.NewService(transactionRepository, userRepository)
 
 	// Handler
-	userHandler := handler.NewAuthHandler(userService)
+	userHandler := handler.NewUserHandler(userService)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	api := e.Group("/api/v1")

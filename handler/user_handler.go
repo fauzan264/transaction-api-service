@@ -33,7 +33,7 @@ func (h *userHandler) RegisterUser(c echo.Context) error {
 	createUser, err := h.userService.RegisterUser(input)
 	if err != nil {
 		if helper.IsDatabaseError(err) {
-			// Jika masalahnya karena database (misal constraint atau masalah query)
+			// If the issue is related to the database (e.g., constraint violation or query issues)
 			errorMessage := map[string]interface{}{"errors": err.Error()}
 			c.Set("error", errorMessage)
 			response := helper.APIResponse(false, "Internal server error during user registration.", errorMessage)

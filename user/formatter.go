@@ -1,7 +1,7 @@
 package user
 
 type UserCreateFormatter struct {
-	NumberBalance	string	`json:"nomor_rekening"`
+	NumberBalance	string	`json:"number_balance"`
 }
 
 type UserBalanceFormatter struct {
